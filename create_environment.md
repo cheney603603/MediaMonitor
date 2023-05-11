@@ -374,7 +374,7 @@ volumes:
 
 ```
 
-Hadoop集群共分配了5个节点，包括：namenode（管理命名空间）、datanode（提供读写请求）、nodemanager（运行程序并监控节点）、resourcemanager（全局资源监控）、historyserver（记录作业信息）节点各一个。
+Hadoop集群共分配了6个节点，包括：namenode（管理命名空间）、datanode1、datanode2（提供读写请求）、nodemanager（运行程序并监控节点）、resourcemanager（全局资源监控）、historyserver（记录作业信息）节点各一个。
 
 上面是docker-compose.yml的相关配置，其中通过`volumes`，可以将hdfs的文件映射到本地，这样一来即使我们删除了容器，只要compose目录下的文件都在，那么我们在创建了新的集群后，原有的hdfs文件就会恢复，不需要重新上传了。
 
