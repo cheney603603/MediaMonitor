@@ -403,14 +403,14 @@ e3fccbb83c75   bde2020/hadoop-historyserver:2.0.0-hadoop3.2.1-java8     "/entryp
 
 Hadoop集群主界面
 
-![1](.\env_imgs\1.png)
+![1](./env_imgs/1.png)
 
 点击进入DataNodes，可以看到有两个DataNode正在运行
 
-![2](.\env_imgs\2.png)
+![2](./env_imgs/2.png)
 
 查看HDFS界面：Utillities->Browse the file system
 
-![3](.\env_imgs\3.png)
+![3](./env_imgs/3.png)
 
 至此，基于docker容器的Hadoop集群搭建完成。
