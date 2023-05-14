@@ -335,13 +335,24 @@ services:
       SERVICE_PRECONDITION: "namenode:9870"
     env_file:
       - ./hadoop.env
+      
+  datanode3:
+    image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
+    container_name: datanode3
+    restart: always
+    volumes:
+      - hadoop_datanode3:/hadoop/dfs/data
+    environment:
+      SERVICE_PRECONDITION: "namenode:9870"
+    env_file:
+      - ./hadoop.env
   
   resourcemanager:
     image: bde2020/hadoop-resourcemanager:2.0.0-hadoop3.2.1-java8
     container_name: resourcemanager
     restart: always
     environment:
-      SERVICE_PRECONDITION: "namenode:9000 namenode:9870 datanode:9864"
+      SERVICE_PRECONDITION: "namenode:9000 namenode:9870 datanode1:9864 datanode2:9864 datanode3:9864"
     env_file:
       - ./hadoop.env
 
@@ -350,7 +361,7 @@ services:
     container_name: nodemanager
     restart: always
     environment:
-      SERVICE_PRECONDITION: "namenode:9000 namenode:9870 datanode:9864 resourcemanager:8088"
+      SERVICE_PRECONDITION: "namenode:9000 namenode:9870 datanode1:9864 datanode2:9864 datanode3:9864 resourcemanager:8088"
     env_file:
       - ./hadoop.env
 
@@ -359,7 +370,7 @@ services:
     container_name: historyserver
     restart: always
     environment:
-      SERVICE_PRECONDITION: "namenode:9000 namenode:9870 datanode:9864 resourcemanager:8088"
+      SERVICE_PRECONDITION: "namenode:9000 namenode:9870 datanode1:9864 datanode2:9864 datanode3:9864 resourcemanager:8088"
     volumes:
       - hadoop_historyserver:/hadoop/yarn/timeline
     env_file:
@@ -370,6 +381,7 @@ volumes:
   hadoop_namenode:
   hadoop_datanode1:
   hadoop_datanode2:
+  hadoop_datanode3:
   hadoop_historyserver:
 
 ```
@@ -388,13 +400,14 @@ Hadoop集群共分配了6个节点，包括：namenode（管理命名空间）�
 
 ```shell
 [root@hecs-161794 docker-hadoop]# docker ps
-CONTAINER ID   IMAGE                                                    COMMAND                  CREATED          STATUS                             PORTS                                                                                  NAMES
-97d1950ea488   bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8          "/entrypoint.sh /run…"   26 seconds ago   Up 24 seconds (health: starting)   9864/tcp                                                                               datanode2
-31557084e7b8   bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8          "/entrypoint.sh /run…"   26 seconds ago   Up 24 seconds (health: starting)   9864/tcp                                                                               datanode1
-ae4877d6412b   bde2020/hadoop-namenode:2.0.0-hadoop3.2.1-java8          "/entrypoint.sh /run…"   33 minutes ago   Up 24 seconds (health: starting)   0.0.0.0:9000->9000/tcp, :::9000->9000/tcp, 0.0.0.0:9870->9870/tcp, :::9870->9870/tcp   namenode
-3f8e5128e368   bde2020/hadoop-nodemanager:2.0.0-hadoop3.2.1-java8       "/entrypoint.sh /run…"   33 minutes ago   Up 24 seconds (health: starting)   8042/tcp                                                                               nodemanager
-e5f1a004c106   bde2020/hadoop-resourcemanager:2.0.0-hadoop3.2.1-java8   "/entrypoint.sh /run…"   33 minutes ago   Up 24 seconds (health: starting)   8088/tcp                                                                               resourcemanager
-e3fccbb83c75   bde2020/hadoop-historyserver:2.0.0-hadoop3.2.1-java8     "/entrypoint.sh /run…"   33 minutes ago   Up 24 seconds (health: starting)   8188/tcp                 
+CONTAINER ID   IMAGE                                                    COMMAND                  CREATED          STATUS                    PORTS                                                                                  NAMES
+e0bedcfb93af   bde2020/hadoop-resourcemanager:2.0.0-hadoop3.2.1-java8   "/entrypoint.sh /run…"   33 seconds ago   Up 31 seconds (healthy)   8088/tcp                                                                               resourcemanager
+27ba7059e920   bde2020/hadoop-namenode:2.0.0-hadoop3.2.1-java8          "/entrypoint.sh /run…"   33 seconds ago   Up 31 seconds (healthy)   0.0.0.0:9000->9000/tcp, :::9000->9000/tcp, 0.0.0.0:9870->9870/tcp, :::9870->9870/tcp   namenode
+cbb798ccfe75   bde2020/hadoop-nodemanager:2.0.0-hadoop3.2.1-java8       "/entrypoint.sh /run…"   33 seconds ago   Up 31 seconds (healthy)   8042/tcp                                                                               nodemanager
+435a231fe350   bde2020/hadoop-historyserver:2.0.0-hadoop3.2.1-java8     "/entrypoint.sh /run…"   33 seconds ago   Up 31 seconds (healthy)   8188/tcp                                                                               historyserver
+360b3450da85   bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8          "/entrypoint.sh /run…"   33 seconds ago   Up 31 seconds (healthy)   9864/tcp                                                                               datanode1
+e7ab07fc33dd   bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8          "/entrypoint.sh /run…"   33 seconds ago   Up 32 seconds (healthy)   9864/tcp                                                                               datanode3
+75d82dcef521   bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8          "/entrypoint.sh /run…"   33 seconds ago   Up 31 seconds (healthy)   9864/tcp                  
 ```
 
 ### 访问Hadoop-NameNode
