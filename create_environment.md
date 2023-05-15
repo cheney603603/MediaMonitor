@@ -412,7 +412,7 @@ e7ab07fc33dd   bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8          "/entryp
 
 ### 访问Hadoop-NameNode
 
-浏览器输入：http://http://123.249.6.46:9870/
+浏览器输入：http://123.249.6.46:9870/
 
 Hadoop集群主界面
 
